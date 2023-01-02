@@ -16,11 +16,21 @@ import rikka.shizuku.Shizuku
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
-    var running = true
-    var permitted = false
+    private var running = true
+    private var permitted = false
     private val callback = Shizuku.OnRequestPermissionResultListener { _, _ ->
         this@MainActivity.check()
     }
+
+    /**
+     * Fuck list
+     *
+     * 《毒瘤列表》
+     */
+    private val fkList = listOf(
+        Constants.ad,
+        Constants.hybrid
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,19 +100,24 @@ class MainActivity : AppCompatActivity() {
             disable.isClickable = false
             return
         }
-        val hybridState = packageManager.getApplicationEnableStateAsString(Constants.hybrid)
-        val adState = packageManager.getApplicationEnableStateAsString(Constants.ad)
-        tv.text = """
-            ${Constants.ad}: $adState
-            ${Constants.hybrid}: $hybridState
-        """.trimIndent()
+
+        val states = mutableListOf<String>()
+
+        fkList.forEach {
+            states.add(packageManager.getApplicationEnableStateAsString(it))
+        }
+
+        tv.text = buildString {
+            for (i in fkList.indices) {
+                append("${fkList[i]}: ${states[i]}\n")
+            }
+        }
 
         enable.setOnClickListener {
             if (permitted) {
                 val p = Shizuku.newProcess(arrayOf("sh"), null, null)
                 val out = p.outputStream
-                out.write(generateCmd(generatePmEnableCmd(Constants.ad) + generatePmEnableCmd(
-                    Constants.hybrid)).toByteArray())
+                out.write(generateCmd(generatePmEnableCmd(fkList)).toByteArray())
                 out.flush()
                 out.close()
                 thread {
@@ -118,14 +133,13 @@ class MainActivity : AppCompatActivity() {
             if (permitted) {
                 val p = Shizuku.newProcess(arrayOf("sh"), null, null)
                 val out = p.outputStream
-                out.write(generateCmd(generatePmDisableCmd(Constants.ad) + generatePmDisableCmd(
-                    Constants.hybrid)).toByteArray())
+                out.write(generateCmd(generatePmDisableCmd(fkList)).toByteArray())
                 out.flush()
                 out.close()
                 thread {
                     Thread.sleep(200L)
                     runOnUiThread {
-                        Toast.makeText(this, "已启用", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "已禁用", Toast.LENGTH_SHORT).show()
                         recreate()
                     }
                 }
@@ -154,8 +168,24 @@ class MainActivity : AppCompatActivity() {
         return "pm enable $pkgName;"
     }
 
+    private fun generatePmEnableCmd(pkgNames: List<String>): String {
+        return buildString {
+            pkgNames.forEach {
+                append(generatePmEnableCmd(it))
+            }
+        }
+    }
+
     private fun generatePmDisableCmd(pkgName: String): String {
         return "pm disable-user $pkgName;"
+    }
+
+    private fun generatePmDisableCmd(pkgNames: List<String>): String {
+        return buildString {
+            pkgNames.forEach {
+                append(generatePmDisableCmd(it))
+            }
+        }
     }
 
     private fun generateCmd(orig: String): String {
