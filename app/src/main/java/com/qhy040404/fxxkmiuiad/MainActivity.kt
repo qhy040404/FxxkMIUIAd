@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private var running = true
     private var permitted = false
     private val callback = Shizuku.OnRequestPermissionResultListener { _, _ ->
-        this@MainActivity.check()
+        this@MainActivity.check(true)
     }
 
     /**
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun check() {
+    private fun check(fromCallback: Boolean = false) {
         runCatching {
             if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
                 Shizuku.requestPermission(0)
@@ -160,6 +160,18 @@ class MainActivity : AppCompatActivity() {
             }
             if (it.javaClass == java.lang.IllegalStateException::class.java) {
                 running = false
+            }
+        }
+        if (fromCallback) {
+            findViewById<TextView>(R.id.running).text = if (running) {
+                "Shizuku 已运行"
+            } else {
+                "Shizuku 未运行"
+            }
+            findViewById<TextView>(R.id.permitted).text = if (permitted) {
+                "Shizuku 已授权"
+            } else {
+                "Shizuku 未授权"
             }
         }
     }
