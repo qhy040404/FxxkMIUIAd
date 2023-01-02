@@ -57,8 +57,6 @@ class MainActivity : AppCompatActivity() {
             "Shizuku 未授权"
         }
 
-        val a = PMCompat.getPackageInfo(packageManager, Constants.shizuku, 0)
-
         if (PMCompat.getPackageInfo(packageManager, Constants.shizuku, 0) == null) {
             tv.text = "Shizuku 未安装"
             enable.apply {
