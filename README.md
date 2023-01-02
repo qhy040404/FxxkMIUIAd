@@ -16,4 +16,5 @@
 ## 实现
 
 使用 [Shizuku](https://github.com/RikkaApps/Shizuku) 的 [API](https://github.com/RikkaApps/Shizuku-API) 实现
-使用此app前需先安装Shizuku并激活
+
+使用此 app 前需先安装 Shizuku 并激活
