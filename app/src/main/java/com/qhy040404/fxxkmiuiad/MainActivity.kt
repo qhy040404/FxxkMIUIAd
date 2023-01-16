@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         initView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        check(true)
+    }
+
     override fun onDestroy() {
         Shizuku.removeRequestPermissionResultListener(callback)
         super.onDestroy()
@@ -114,7 +119,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         enable.setOnClickListener {
-            if (permitted) {
+            @Suppress("KotlinConstantConditions")
+            if (running && permitted) {
                 val p = Shizuku.newProcess(arrayOf("sh"), null, null)
                 val out = p.outputStream
                 out.write(generateCmd(generatePmEnableCmd(fkList)).toByteArray())
@@ -127,10 +133,15 @@ class MainActivity : AppCompatActivity() {
                         recreate()
                     }
                 }
+            } else if (!running) {
+                Toast.makeText(this, "Shizuku 未运行", Toast.LENGTH_SHORT).show()
+            } else if (!permitted) {
+                Toast.makeText(this, "Shizuku 未授权", Toast.LENGTH_SHORT).show()
             }
         }
         disable.setOnClickListener {
-            if (permitted) {
+            @Suppress("KotlinConstantConditions")
+            if (running && permitted) {
                 val p = Shizuku.newProcess(arrayOf("sh"), null, null)
                 val out = p.outputStream
                 out.write(generateCmd(generatePmDisableCmd(fkList)).toByteArray())
@@ -143,6 +154,10 @@ class MainActivity : AppCompatActivity() {
                         recreate()
                     }
                 }
+            } else if (!running) {
+                Toast.makeText(this, "Shizuku 未运行", Toast.LENGTH_SHORT).show()
+            } else if (!permitted) {
+                Toast.makeText(this, "Shizuku 未授权", Toast.LENGTH_SHORT).show()
             }
         }
     }
