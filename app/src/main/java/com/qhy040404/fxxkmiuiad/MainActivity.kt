@@ -163,6 +163,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun check(fromCallback: Boolean = false) {
+        running = true
+        permitted = false
         runCatching {
             if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
                 Shizuku.requestPermission(0)
