@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/info"
         android:layout_width="267dp"
         android:layout_height="101dp"
         android:gravity="center"
@@ -17,48 +17,70 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/running"
+        android:id="@+id/running_info"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/tv"
-        app:layout_constraintStart_toStartOf="@+id/tv" />
+        app:layout_constraintBottom_toTopOf="@+id/info"
+        app:layout_constraintStart_toStartOf="@+id/info" />
 
     <TextView
-        android:id="@+id/permitted"
+        android:id="@+id/permitted_info"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/tv"
-        app:layout_constraintEnd_toEndOf="@+id/tv" />
+        app:layout_constraintBottom_toTopOf="@+id/info"
+        app:layout_constraintEnd_toEndOf="@+id/info" />
 
     <Button
-        android:id="@+id/enable"
+        android:id="@+id/enable_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="启用"
-        app:layout_constraintStart_toStartOf="@+id/tv"
-        app:layout_constraintTop_toBottomOf="@+id/tv" />
+        app:layout_constraintStart_toStartOf="@+id/info"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
 
     <Button
-        android:id="@+id/disable"
+        android:id="@+id/disable_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="禁用"
-        app:layout_constraintEnd_toEndOf="@+id/tv"
-        app:layout_constraintTop_toBottomOf="@+id/tv" />
+        app:layout_constraintEnd_toEndOf="@+id/info"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
 
     <Button
-        android:id="@+id/install"
+        android:id="@+id/install_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="安装 Shizuku"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/tv"
-        app:layout_constraintStart_toStartOf="@+id/tv"
-        app:layout_constraintTop_toBottomOf="@+id/tv" />
+        app:layout_constraintEnd_toEndOf="@+id/info"
+        app:layout_constraintStart_toStartOf="@+id/info"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
+
+    <Button
+        android:id="@+id/jump_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="跳转到 Shizuku"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/info"
+        app:layout_constraintStart_toStartOf="@+id/info"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
+
+    <Button
+        android:id="@+id/request_permission_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="申请 Shizuku 授权"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/info"
+        app:layout_constraintStart_toStartOf="@+id/info"
+        app:layout_constraintTop_toBottomOf="@+id/info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

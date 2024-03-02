@@ -1,18 +1,24 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("dev.rikka.tools.refine")
 }
 
 android {
     namespace = "com.qhy040404.fxxkmiuiad"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.qhy040404.fxxkmiuiad"
         minSdk = 29
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 3
         versionName = "1.1.1"
+    }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
     }
 
     buildTypes {
@@ -20,8 +26,10 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isCrunchPngs = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             packagingOptions.resources.excludes += setOf(
                 "DebugProbesKt.bin",
                 "META-INF/*.version"
@@ -38,9 +46,18 @@ android {
     }
 }
 
+configurations.all {
+    exclude("androidx.appcompat", "appcompat")
+    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk7")
+}
+
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    implementation("dev.rikka.shizuku:api:13.1.0")
-    implementation("dev.rikka.shizuku:provider:13.1.0")
+    compileOnly(project(":hidden-api"))
+
+    implementation("androidx.annotation:annotation:1.7.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("dev.rikka.rikkax.appcompat:appcompat:1.6.1")
+    implementation("dev.rikka.shizuku:api:13.1.5")
+    implementation("dev.rikka.shizuku:provider:13.1.5")
+    implementation("dev.rikka.tools.refine:runtime:4.4.0")
 }

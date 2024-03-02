@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "FxxkMIUIAd"
-include(":app")
+include(":app", ":hidden-api")
