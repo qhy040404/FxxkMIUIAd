@@ -2,6 +2,24 @@
 
 用最小的代价关闭 MIUI / 澎湃 OS 的广告。
 
+## 注意
+
+部分机型系统会将以下组件标记为系统应用，从而导致 pm 无法禁用。
+
+目前能找到最好的解决方案是标记为 suspend
+
+可打开 ADB 调试后使用电脑 ADB 执行以下命令：
+```shell
+adb shell pm suspend com.miui.hybrid
+adb shell pm suspend com.miui.systemAdSolution
+```
+
+或使用 ShizukuRunner 执行以下命令：
+```shell
+pm suspend com.miui.hybrid
+pm suspend com.miui.systemAdSolution
+```
+
 ## 最初的想法
 
 主力机不想 root ，也不想刷面具，不如用最简单的 adb 权限来禁用掉几个毒瘤广告，既不破坏系统完整性，也能减少 MIUI 那些关不掉的广告
