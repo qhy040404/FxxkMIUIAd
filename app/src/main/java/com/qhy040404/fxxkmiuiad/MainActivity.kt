@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.qhy040404.fxxkmiuiad.base.BaseActivity
 import com.qhy040404.fxxkmiuiad.databinding.ActivityMainBinding
 import com.qhy040404.fxxkmiuiad.utils.OsUtils
@@ -13,6 +15,7 @@ import com.qhy040404.fxxkmiuiad.utils.PackageUtils
 import com.qhy040404.fxxkmiuiad.utils.PackageUtils.getApplicationEnableStateAsString
 import com.qhy040404.fxxkmiuiad.utils.ShizukuStatus
 import com.qhy040404.fxxkmiuiad.utils.ShizukuUtils
+import com.qhy040404.fxxkmiuiad.utils.copyToClipboard
 import rikka.shizuku.Shizuku
 import kotlin.concurrent.thread
 
@@ -182,23 +185,94 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             Constants.FUCKLIST.forEach {
                 PackageUtils.setApplicationEnabledSetting(it, PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
             }
-            thread {
-                Thread.sleep(200L)
-                runOnUiThread {
-                    Toast.makeText(this, "已启用", Toast.LENGTH_SHORT).show()
-                    refreshView()
+            if (Constants.FUCKLIST.any { packageManager.isPackageSuspended(it) }) {
+                thread {
+                    Thread.sleep(200L)
+                    runOnUiThread {
+                        MaterialAlertDialogBuilder(this)
+                            .setTitle("修改状态失败")
+                            .setMessage(
+                                """
+                                部分包处于 suspend 状态
+                                如需解除请使用 shell 解除
+                                点击按钮以复制指令。
+                            """.trimIndent()
+                            )
+                            .setPositiveButton("关闭", null)
+                            .setNeutralButton("复制 adb 指令") { _, _ ->
+                                buildString {
+                                    Constants.FUCKLIST.forEach {
+                                        append("adb shell pm unsuspend $it")
+                                        appendLine()
+                                    }
+                                }.copyToClipboard(this)
+                            }
+                            .setNegativeButton("复制 shell 指令") { _, _ ->
+                                buildString {
+                                    Constants.FUCKLIST.forEach {
+                                        append("pm unsuspend $it")
+                                        appendLine()
+                                    }
+                                }.copyToClipboard(this)
+                            }
+                            .create()
+                            .show()
+                    }
+                }
+            } else {
+                thread {
+                    Thread.sleep(200L)
+                    runOnUiThread {
+                        Toast.makeText(this, "已启用", Toast.LENGTH_SHORT).show()
+                        refreshView()
+                    }
                 }
             }
         }
         binding.disableBtn.setOnClickListener {
-            Constants.FUCKLIST.forEach {
-                PackageUtils.setApplicationEnabledSetting(it, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER)
-            }
-            thread {
-                Thread.sleep(200L)
-                runOnUiThread {
-                    Toast.makeText(this, "已禁用", Toast.LENGTH_SHORT).show()
-                    refreshView()
+            runCatching {
+                Constants.FUCKLIST.forEach {
+                    PackageUtils.setApplicationEnabledSetting(it, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER)
+                }
+            }.onSuccess {
+                thread {
+                    Thread.sleep(200L)
+                    runOnUiThread {
+                        Toast.makeText(this, "已禁用", Toast.LENGTH_SHORT).show()
+                        refreshView()
+                    }
+                }
+            }.onFailure {
+                thread {
+                    Thread.sleep(200L)
+                    runOnUiThread {
+                        MaterialAlertDialogBuilder(this)
+                            .setTitle("修改状态失败")
+                            .setMessage("""
+                                当前版本系统不允许修改相关包状态为 disabled
+                                请通过 shell 来使对应包 suspend
+                                点击按钮以复制指令。
+                            """.trimIndent())
+                            .setPositiveButton("关闭", null)
+                            .setNeutralButton("复制 adb 指令") {_ ,_ ->
+                                buildString {
+                                    Constants.FUCKLIST.forEach {
+                                        append("adb shell pm suspend $it")
+                                        appendLine()
+                                    }
+                                }.copyToClipboard(this)
+                            }
+                            .setNegativeButton("复制 shell 指令") {_,_->
+                                buildString {
+                                    Constants.FUCKLIST.forEach {
+                                        append("pm suspend $it")
+                                        appendLine()
+                                    }
+                                }.copyToClipboard(this)
+                            }
+                            .create()
+                            .show()
+                    }
                 }
             }
         }
