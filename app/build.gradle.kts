@@ -12,8 +12,8 @@ android {
         applicationId = "com.qhy040404.fxxkmiuiad"
         minSdk = 29
         targetSdk = 34
-        versionCode = 5
-        versionName = "1.2.1"
+        versionCode = 6
+        versionName = "1.2.2"
     }
 
     buildFeatures {
