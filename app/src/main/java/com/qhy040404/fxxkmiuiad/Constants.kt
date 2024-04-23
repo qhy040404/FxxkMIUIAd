@@ -6,7 +6,11 @@ object Constants {
 
     const val MIUI_ROM = "com.miui.rom"
     val FUCKLIST = listOf(
+        // CN
         "com.miui.hybrid",
-        "com.miui.systemAdSolution"
+        "com.miui.systemAdSolution",
+
+        // GLOBAL
+        "com.miui.msa.global"
     )
 }

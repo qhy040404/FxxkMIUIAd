@@ -34,6 +34,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
+    private val packageList = Constants.FUCKLIST.filter {
+        packageManager.getPackageInfo(it, 0) != null
+    }
+
     override fun init() {
         Shizuku.addRequestPermissionResultListener(callback)
         initView()
@@ -83,7 +87,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
                 val states = mutableMapOf<String, String>()
 
-                Constants.FUCKLIST.forEach {
+                packageList.forEach {
                     states[it] = packageManager.getApplicationEnableStateAsString(it)
                 }
 
@@ -182,10 +186,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             runCatching { Shizuku.requestPermission(0) }
         }
         binding.enableBtn.setOnClickListener {
-            Constants.FUCKLIST.forEach {
+            packageList.forEach {
                 PackageUtils.setApplicationEnabledSetting(it, PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
             }
-            if (Constants.FUCKLIST.any { packageManager.isPackageSuspended(it) }) {
+            if (packageList.any { packageManager.isPackageSuspended(it) }) {
                 thread {
                     Thread.sleep(200L)
                     runOnUiThread {
@@ -201,7 +205,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                             .setPositiveButton("关闭", null)
                             .setNeutralButton("复制 adb 指令") { _, _ ->
                                 buildString {
-                                    Constants.FUCKLIST.forEach {
+                                    packageList.forEach {
                                         append("adb shell pm unsuspend $it")
                                         appendLine()
                                     }
@@ -209,7 +213,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                             }
                             .setNegativeButton("复制 shell 指令") { _, _ ->
                                 buildString {
-                                    Constants.FUCKLIST.forEach {
+                                    packageList.forEach {
                                         append("pm unsuspend $it")
                                         appendLine()
                                     }
@@ -231,7 +235,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         binding.disableBtn.setOnClickListener {
             runCatching {
-                Constants.FUCKLIST.forEach {
+                packageList.forEach {
                     PackageUtils.setApplicationEnabledSetting(it, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER)
                 }
             }.onSuccess {
@@ -256,7 +260,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                             .setPositiveButton("关闭", null)
                             .setNeutralButton("复制 adb 指令") {_ ,_ ->
                                 buildString {
-                                    Constants.FUCKLIST.forEach {
+                                    packageList.forEach {
                                         append("adb shell pm suspend $it")
                                         appendLine()
                                     }
@@ -264,7 +268,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                             }
                             .setNegativeButton("复制 shell 指令") {_,_->
                                 buildString {
-                                    Constants.FUCKLIST.forEach {
+                                    packageList.forEach {
                                         append("pm suspend $it")
                                         appendLine()
                                     }
