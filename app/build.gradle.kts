@@ -54,7 +54,7 @@ configurations.all {
 dependencies {
     compileOnly(project(":hidden-api"))
 
-    implementation("androidx.annotation:annotation:1.7.1")
+    implementation("androidx.annotation:annotation:1.8.2")
     implementation("com.google.android.material:material:1.11.0")
     implementation("dev.rikka.rikkax.appcompat:appcompat:1.6.1")
     implementation("dev.rikka.shizuku:api:13.1.5")
