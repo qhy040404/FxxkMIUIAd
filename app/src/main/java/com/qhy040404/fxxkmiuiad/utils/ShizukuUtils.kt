@@ -22,10 +22,3 @@ object ShizukuUtils {
     }
 }
 
-enum class ShizukuStatus {
-    Ok,
-    Outdated,
-    NotRunning,
-    NotAuthorized,
-    NotInstalled
-}

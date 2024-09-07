@@ -6,6 +6,7 @@ import android.content.pm.IPackageManager
 import android.content.pm.PackageManager
 import com.qhy040404.fxxkmiuiad.BuildConfig
 import com.qhy040404.fxxkmiuiad.compat.PackageManagerCompat.Companion.asCompat
+import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
 
@@ -13,10 +14,14 @@ object PackageUtils {
     fun PackageManager.getApplicationEnableStateAsString(pkg: String): String {
         return when (this.getApplicationEnabledSetting(pkg)) {
             PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.COMPONENT_ENABLED_STATE_ENABLED -> {
-                if (isPackageSuspended(pkg)) {
-                    "禁用 (suspend)"
-                } else {
-                    "启用"
+                try {
+                    if (isPackageSuspended(pkg)) {
+                        "禁用 (suspend)"
+                    } else {
+                        "启用"
+                    }
+                } catch (e: PackageManager.NameNotFoundException) {
+                    "未安装"
                 }
             }
 
@@ -46,5 +51,21 @@ object PackageUtils {
         IPackageManager.Stub.asInterface(
             ShizukuBinderWrapper(SystemServiceHelper.getSystemService("package"))
         ).setApplicationEnabledSetting(packageName, state, 0, 0, BuildConfig.APPLICATION_ID)
+    }
+
+    fun setPackagesSuspendedAsUser(packageName: String, suspended: Boolean) {
+        HiddenApiBypass.addHiddenApiExemptions("")
+
+        IPackageManager.Stub.asInterface(
+            ShizukuBinderWrapper(SystemServiceHelper.getSystemService("package"))
+        ).setPackagesSuspendedAsUser(
+            arrayOf(packageName),
+            suspended,
+            null,
+            null,
+            null,
+            "com.android.shell",
+            0
+        )
     }
 }
