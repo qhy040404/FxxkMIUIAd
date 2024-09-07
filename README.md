@@ -29,6 +29,8 @@ pm suspend com.miui.systemAdSolution
 - `com.miui.hybrid` 快应用框架
 - `com.miui.systemAdSolution` 智能服务（开屏广告）
 
+- `com.miui.msa.global` 国际版的我也不知道是啥
+
 欢迎向项目提交更多的广告组件, 可以开 issue, 也可以直接修改 `Constants.FUCKLIST` 并提 PR
 
 > 目前的宗旨是只禁用影响用户体验的，或者说与用户有交互的部分，所以没有管Analytics和其他几个。
