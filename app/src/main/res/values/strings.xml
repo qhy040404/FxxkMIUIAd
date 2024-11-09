@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FxxkMIUIAd</string>
+    <string name="enable">启用</string>
+    <string name="disable">禁用</string>
+    <string name="install_shizuku">安装 Shizuku</string>
+    <string name="open_shizuku">跳转到 Shizuku</string>
+    <string name="request_shizuku">申请 Shizuku 授权</string>
 </resources>
