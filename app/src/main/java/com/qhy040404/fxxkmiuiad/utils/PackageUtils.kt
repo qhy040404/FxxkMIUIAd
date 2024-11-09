@@ -56,16 +56,32 @@ object PackageUtils {
     fun setPackagesSuspendedAsUser(packageName: String, suspended: Boolean) {
         HiddenApiBypass.addHiddenApiExemptions("")
 
-        IPackageManager.Stub.asInterface(
+        val mInterface = IPackageManager.Stub.asInterface(
             ShizukuBinderWrapper(SystemServiceHelper.getSystemService("package"))
-        ).setPackagesSuspendedAsUser(
-            arrayOf(packageName),
-            suspended,
-            null,
-            null,
-            null,
-            "com.android.shell",
-            0
         )
+
+        if (OsUtils.atLeastV()) {
+            mInterface.setPackagesSuspendedAsUser(
+                arrayOf(packageName),
+                suspended,
+                null,
+                null,
+                null,
+                0,
+                "com.android.shell",
+                0,
+                0
+            )
+        } else {
+            mInterface.setPackagesSuspendedAsUser(
+                arrayOf(packageName),
+                suspended,
+                null,
+                null,
+                null,
+                "com.android.shell",
+                0
+            )
+        }
     }
 }

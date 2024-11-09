@@ -12,6 +12,11 @@ object OsUtils {
         return Build.VERSION.SDK_INT >= 33
     }
 
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    fun atLeastV(): Boolean {
+        return Build.VERSION.SDK_INT >= 35
+    }
+
     fun isMiui(context: Context): Boolean {
         return context.packageManager.asCompat().getPackageInfo(Constants.MIUI_ROM, 0) != null
     }
