@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("dev.rikka.tools.refine")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -12,13 +12,13 @@ android {
         applicationId = "com.qhy040404.fxxkmiuiad"
         minSdk = 29
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.3.1"
+        versionCode = 10
+        versionName = "1.4.0"
     }
 
     buildFeatures {
         buildConfig = true
-        viewBinding = true
+        compose = true
     }
 
     buildTypes {
@@ -55,10 +55,13 @@ dependencies {
     compileOnly(project(":hidden-api"))
 
     implementation("androidx.annotation:annotation:1.9.1")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("dev.rikka.rikkax.appcompat:appcompat:1.6.1")
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
-    implementation("dev.rikka.tools.refine:runtime:4.4.0")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+
+    implementation(platform("androidx.compose:compose-bom:2024.11.00"))
+    implementation("androidx.compose.runtime:runtime")
+    implementation("androidx.activity:activity-compose")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material3:material3")
 }
