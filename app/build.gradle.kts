@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.qhy04.gradle.android.res_opt")
 }
 
 android {
@@ -14,10 +15,16 @@ android {
         targetSdk = 35
         versionCode = 10
         versionName = "1.4.0"
+
+        resourceConfigurations.addAll(
+            setOf(
+                "en",
+                "zh-rCN"
+            )
+        )
     }
 
     buildFeatures {
-        buildConfig = true
         compose = true
     }
 
@@ -30,9 +37,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            ndk.abiFilters.add("")
             packagingOptions.resources.excludes += setOf(
                 "DebugProbesKt.bin",
-                "META-INF/*.version"
+                "META-INF/*.version",
+                "**LICENSE**"
             )
             dependenciesInfo.includeInApk = false
         }

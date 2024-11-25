@@ -28,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -36,7 +35,7 @@ import com.qhy040404.fxxkmiuiad.theme.DayNightTheme
 import com.qhy040404.fxxkmiuiad.utils.OsUtils
 import com.qhy040404.fxxkmiuiad.utils.PackageUtils
 import com.qhy040404.fxxkmiuiad.utils.PackageUtils.getApplicationEnableStateAsString
-import com.qhy040404.fxxkmiuiad.utils.ShizukuStatus
+import com.qhy040404.fxxkmiuiad.utils.PackageUtils.isPackageInstalled
 import com.qhy040404.fxxkmiuiad.utils.ShizukuUtils
 import rikka.shizuku.Shizuku
 
@@ -50,7 +49,7 @@ class MainComposeActivity : ComponentActivity() {
             trigger.value = !trigger.value
         } else {
             runCatching {
-                PackageUtils.startLaunchAppActivity(this, Constants.SHIZUKU)
+                PackageUtils.startLaunchAppActivity(this, SHIZUKU)
                 Toast.makeText(this, "授权失败，跳转到 Shizuku 手动授权", Toast.LENGTH_LONG).show()
             }.onFailure {
                 Toast.makeText(this, "未检测到 Shizuku, 请手动前往 Sui 授权", Toast.LENGTH_LONG).show()
@@ -62,13 +61,8 @@ class MainComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Shizuku.addRequestPermissionResultListener(callback)
-        packageList = Constants.FUCKLIST.filter {
-            try {
-                packageManager.getPackageInfo(it, 0)
-                true
-            } catch (e: PackageManager.NameNotFoundException) {
-                false
-            }
+        packageList = FUCKLIST.filter {
+            packageManager.isPackageInstalled(it)
         }
 
         enableEdgeToEdge()
@@ -92,21 +86,23 @@ class MainComposeActivity : ComponentActivity() {
                             return@Scaffold
                         }
 
-                        InternalRefresh(trigger.value)
+                        ReloadTrigger(trigger.value)
                         val shizukuStatus = ShizukuUtils.checkStatus(context)
                         Column {
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
                                 Text(
                                     text = when (shizukuStatus) {
-                                        ShizukuStatus.Ok, ShizukuStatus.Outdated, ShizukuStatus.NotAuthorized -> "Shizuku 已运行"
-                                        ShizukuStatus.NotRunning, ShizukuStatus.NotInstalled -> "Shizuku 未运行"
+                                        Ok, Outdated, NotAuthorized -> "Shizuku 已运行"
+                                        NotRunning, NotInstalled -> "Shizuku 未运行"
+                                        else -> throw IllegalStateException()
                                     }, textAlign = TextAlign.Center
                                 )
 
                                 Text(
                                     text = when (shizukuStatus) {
-                                        ShizukuStatus.Ok, ShizukuStatus.Outdated -> "Shizuku 已授权"
-                                        ShizukuStatus.NotRunning, ShizukuStatus.NotAuthorized, ShizukuStatus.NotInstalled -> "Shizuku 未授权"
+                                        Ok, Outdated -> "Shizuku 已授权"
+                                        NotRunning, NotAuthorized, NotInstalled -> "Shizuku 未授权"
+                                        else -> throw IllegalStateException()
                                     }, textAlign = TextAlign.Center
                                 )
                             }
@@ -118,13 +114,14 @@ class MainComposeActivity : ComponentActivity() {
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(text = when (shizukuStatus) {
-                                    ShizukuStatus.Ok -> packageList.associateWith {
+                                    Ok -> packageList.associateWith {
                                         packageManager.getApplicationEnableStateAsString(it)
                                     }.entries.joinToString("\n") { (name, state) -> "$name: $state" }
 
-                                    ShizukuStatus.Outdated -> "Shizuku 版本过低，请更新"
-                                    ShizukuStatus.NotInstalled -> "Shizuku 未安装"
-                                    ShizukuStatus.NotRunning, ShizukuStatus.NotAuthorized -> ""
+                                    Outdated -> "Shizuku 版本过低，请更新"
+                                    NotInstalled -> "Shizuku 未安装"
+                                    NotRunning, NotAuthorized -> ""
+                                    else -> throw IllegalStateException()
                                 }, textAlign = TextAlign.Center)
                             }
 
@@ -135,14 +132,14 @@ class MainComposeActivity : ComponentActivity() {
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
                                 when (shizukuStatus) {
-                                    ShizukuStatus.Ok -> {
+                                    Ok -> {
                                         EnableBtn()
                                         DisableBtn()
                                     }
 
-                                    ShizukuStatus.Outdated, ShizukuStatus.NotInstalled -> InstallBtn()
-                                    ShizukuStatus.NotRunning -> JumpBtn()
-                                    ShizukuStatus.NotAuthorized -> RequestPermissionBtn()
+                                    Outdated, NotInstalled -> InstallBtn()
+                                    NotRunning -> JumpBtn()
+                                    NotAuthorized -> RequestPermissionBtn()
                                 }
                             }
                         }
@@ -176,7 +173,7 @@ fun EnableBtn() {
 
         showToast.value = true
     }) {
-        Text(stringResource(id = R.string.enable))
+        Text("启用")
     }
 
     LaunchedEffect(showToast.value) {
@@ -207,7 +204,7 @@ fun DisableBtn() {
 
         showToast.value = true
     }) {
-        Text(stringResource(id = R.string.disable))
+        Text("禁用")
     }
 
     LaunchedEffect(showToast.value) {
@@ -225,11 +222,11 @@ fun InstallBtn() {
     Button(onClick = {
         runCatching {
             context.startActivity(Intent(Intent.ACTION_VIEW).apply {
-                data = Constants.SHIZUKU_RELEASE.toUri()
+                data = SHIZUKU_RELEASE.toUri()
             })
         }
     }) {
-        Text(stringResource(id = R.string.install_shizuku))
+        Text("安装 Shizuku")
     }
 }
 
@@ -238,10 +235,10 @@ fun JumpBtn() {
     val context = LocalContext.current
     Button(onClick = {
         runCatching {
-            PackageUtils.startLaunchAppActivity(context, Constants.SHIZUKU)
+            PackageUtils.startLaunchAppActivity(context, SHIZUKU)
         }
     }) {
-        Text(stringResource(id = R.string.open_shizuku))
+        Text("跳转到 Shizuku")
     }
 }
 
@@ -252,10 +249,10 @@ fun RequestPermissionBtn() {
             Shizuku.requestPermission(0)
         }
     }) {
-        Text(stringResource(id = R.string.request_shizuku))
+        Text("申请 Shizuku 授权")
     }
 }
 
 @Composable
-fun InternalRefresh(trigger: Any) {
+fun ReloadTrigger(trigger: Any) {
 }

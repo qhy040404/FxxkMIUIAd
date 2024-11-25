@@ -104,12 +104,6 @@
 
 -dontwarn java.lang.ClassValue
 
-# ViewBinding
--keep public class * extends androidx.viewbinding.ViewBinding {*;}
--keep,allowoptimization public class * extends androidx.viewbinding.ViewBinding {
-  public static * inflate(android.view.LayoutInflater);
-}
-
 # Custom
--keep public class com.qhy040404.fxxkmiuiad.base.**{*;}
--keep public class com.qhy040404.fxxkmiuiad.utils.**{*;}
+#-keep public class com.qhy040404.fxxkmiuiad.utils.OsUtils{*;}
+-keep public class com.qhy040404.fxxkmiuiad.utils.PackageUtils{*;}

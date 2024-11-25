@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.IPackageManager
 import android.content.pm.PackageManager
-import com.qhy040404.fxxkmiuiad.BuildConfig
-import com.qhy040404.fxxkmiuiad.compat.PackageManagerCompat.Companion.asCompat
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
@@ -30,6 +28,14 @@ object PackageUtils {
         }
     }
 
+    fun PackageManager.isPackageInstalled(pkg: String): Boolean {
+        return try {
+            getPackageInfo(pkg, 0) != null
+        } catch (_: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
     fun startLaunchAppActivity(context: Context, packageName: String?) {
         if (packageName == null) {
             return
@@ -38,7 +44,7 @@ object PackageUtils {
         val intent = Intent(Intent.ACTION_MAIN, null)
             .addCategory(Intent.CATEGORY_LAUNCHER)
             .setPackage(packageName)
-        val info = context.packageManager.asCompat().queryIntentActivities(intent, 0)
+        val info = context.packageManager.queryIntentActivities(intent, 0)
         launcherActivity = info.getOrNull(0)?.activityInfo?.name.orEmpty()
         val launchIntent = Intent(Intent.ACTION_MAIN)
             .addCategory(Intent.CATEGORY_LAUNCHER)
@@ -50,7 +56,7 @@ object PackageUtils {
     fun setApplicationEnabledSetting(packageName: String, state: Int) {
         IPackageManager.Stub.asInterface(
             ShizukuBinderWrapper(SystemServiceHelper.getSystemService("package"))
-        ).setApplicationEnabledSetting(packageName, state, 0, 0, BuildConfig.APPLICATION_ID)
+        ).setApplicationEnabledSetting(packageName, state, 0, 0, "com.qhy040404.fxxkmiuiad")
     }
 
     fun setPackagesSuspendedAsUser(packageName: String, suspended: Boolean) {
