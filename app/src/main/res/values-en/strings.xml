@@ -1,0 +1,22 @@
+<resources>
+    <string name="shizuku_not_found">Shizuku is not installed</string>
+    <string name="enable">Enable</string>
+    <string name="enabled">Enabled</string>
+    <string name="disable">Disable</string>
+    <string name="disabled">Disabled</string>
+    <string name="install_shizuku">Install Shizuku</string>
+    <string name="request_shizuku_auth">Request Shizuku authorization</string>
+    <string name="package_disabled_by_suspend">Disabled (suspend)</string>
+    <string name="package_enabled">Enabled</string>
+    <string name="package_not_found">Not Installed</string>
+    <string name="package_disabled">Disabled</string>
+    <string name="permission_result_failed">Authorization failed. Jump to Shizuku for manual authorization</string>
+    <string name="permission_manual_sui">Shizuku not detected, please go to Sui for authorization manually</string>
+    <string name="invalid_system">Not MIUI or HyperOS</string>
+    <string name="shizuku_running">Shizuku is running</string>
+    <string name="shizuku_not_running">Shizuku is not running</string>
+    <string name="shizuku_authed">Shizuku authorized</string>
+    <string name="shizuku_not_authed">Shizuku not authorized</string>
+    <string name="shizuku_low_version">Shizuku is outdated, please update</string>
+    <string name="jump_to_shizuku">Jump to Shizuku</string>
+</resources>

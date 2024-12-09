@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -50,9 +51,9 @@ class MainComposeActivity : ComponentActivity() {
         } else {
             runCatching {
                 PackageUtils.startLaunchAppActivity(this, SHIZUKU)
-                Toast.makeText(this, "授权失败，跳转到 Shizuku 手动授权", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.permission_result_failed), Toast.LENGTH_LONG).show()
             }.onFailure {
-                Toast.makeText(this, "未检测到 Shizuku, 请手动前往 Sui 授权", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getString(R.string.permission_manual_sui), Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -69,7 +70,7 @@ class MainComposeActivity : ComponentActivity() {
         setContent {
             DayNightTheme {
                 Scaffold(topBar = {
-                    TopAppBar(title = { Text("FxxkMIUIAd") })
+                    TopAppBar(title = { Text(stringResource(R.string.app_name)) })
                 }) { innerPadding ->
                     Box(
                         modifier = Modifier
@@ -79,7 +80,7 @@ class MainComposeActivity : ComponentActivity() {
                         val context = LocalContext.current
                         if (!OsUtils.isMiui(context)) {
                             Text(
-                                "非 MIUI 或 澎湃 OS",
+                                stringResource(R.string.invalid_system),
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.bodyLarge
                             )
@@ -92,16 +93,16 @@ class MainComposeActivity : ComponentActivity() {
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
                                 Text(
                                     text = when (shizukuStatus) {
-                                        Ok, Outdated, NotAuthorized -> "Shizuku 已运行"
-                                        NotRunning, NotInstalled -> "Shizuku 未运行"
+                                        Ok, Outdated, NotAuthorized -> stringResource(R.string.shizuku_running)
+                                        NotRunning, NotInstalled -> stringResource(R.string.shizuku_not_running)
                                         else -> throw IllegalStateException()
                                     }, textAlign = TextAlign.Center
                                 )
 
                                 Text(
                                     text = when (shizukuStatus) {
-                                        Ok, Outdated -> "Shizuku 已授权"
-                                        NotRunning, NotAuthorized, NotInstalled -> "Shizuku 未授权"
+                                        Ok, Outdated -> stringResource(R.string.shizuku_authed)
+                                        NotRunning, NotAuthorized, NotInstalled -> stringResource(R.string.shizuku_not_authed)
                                         else -> throw IllegalStateException()
                                     }, textAlign = TextAlign.Center
                                 )
@@ -118,8 +119,8 @@ class MainComposeActivity : ComponentActivity() {
                                         packageManager.getApplicationEnableStateAsString(it)
                                     }.entries.joinToString("\n") { (name, state) -> "$name: $state" }
 
-                                    Outdated -> "Shizuku 版本过低，请更新"
-                                    NotInstalled -> "Shizuku 未安装"
+                                    Outdated -> stringResource(R.string.shizuku_low_version)
+                                    NotInstalled -> stringResource(R.string.shizuku_not_found)
                                     NotRunning, NotAuthorized -> ""
                                     else -> throw IllegalStateException()
                                 }, textAlign = TextAlign.Center)
@@ -173,12 +174,12 @@ fun EnableBtn() {
 
         showToast.value = true
     }) {
-        Text("启用")
+        Text(stringResource(R.string.enable))
     }
 
     LaunchedEffect(showToast.value) {
         if (showToast.value) {
-            Toast.makeText(context, "已启用", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.enabled), Toast.LENGTH_SHORT).show()
             trigger.value = !trigger.value
             showToast.value = false
         }
@@ -204,12 +205,12 @@ fun DisableBtn() {
 
         showToast.value = true
     }) {
-        Text("禁用")
+        Text(stringResource(R.string.disable))
     }
 
     LaunchedEffect(showToast.value) {
         if (showToast.value) {
-            Toast.makeText(context, "已禁用", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.disabled), Toast.LENGTH_SHORT).show()
             trigger.value = !trigger.value
             showToast.value = false
         }
@@ -226,7 +227,7 @@ fun InstallBtn() {
             })
         }
     }) {
-        Text("安装 Shizuku")
+        Text(stringResource(R.string.install_shizuku))
     }
 }
 
@@ -238,7 +239,7 @@ fun JumpBtn() {
             PackageUtils.startLaunchAppActivity(context, SHIZUKU)
         }
     }) {
-        Text("跳转到 Shizuku")
+        Text(stringResource(R.string.jump_to_shizuku))
     }
 }
 
@@ -249,7 +250,7 @@ fun RequestPermissionBtn() {
             Shizuku.requestPermission(0)
         }
     }) {
-        Text("申请 Shizuku 授权")
+        Text(stringResource(R.string.request_shizuku_auth))
     }
 }
 

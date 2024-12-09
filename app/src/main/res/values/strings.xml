@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name" translatable="false">FxxkMIUIAd</string>
+    <string name="permission_result_failed">授权失败，跳转到 Shizuku 手动授权</string>
+    <string name="permission_manual_sui">未检测到 Shizuku, 请手动前往 Sui 授权</string>
+    <string name="invalid_system">非 MIUI 或 澎湃 OS</string>
+    <string name="shizuku_running">Shizuku 已运行</string>
+    <string name="shizuku_not_running">Shizuku 未运行</string>
+    <string name="shizuku_authed">Shizuku 已授权</string>
+    <string name="shizuku_not_authed">Shizuku 未授权</string>
+    <string name="shizuku_low_version">Shizuku 版本过低，请更新</string>
+    <string name="shizuku_not_found">Shizuku 未安装</string>
+    <string name="enable">启用</string>
+    <string name="enabled">已启用</string>
+    <string name="disable">禁用</string>
+    <string name="disabled">已禁用</string>
+    <string name="install_shizuku">安装 Shizuku</string>
+    <string name="jump_to_shizuku">跳转到 Shizuku</string>
+    <string name="request_shizuku_auth">申请 Shizuku 授权</string>
+    <string name="package_disabled_by_suspend">禁用 (suspend)</string>
+    <string name="package_enabled">启用</string>
+    <string name="package_not_found">未安装</string>
+    <string name="package_disabled">禁用</string>
 </resources>

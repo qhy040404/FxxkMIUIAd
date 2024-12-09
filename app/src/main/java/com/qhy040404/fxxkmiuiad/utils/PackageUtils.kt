@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.IPackageManager
 import android.content.pm.PackageManager
+import com.qhy040404.fxxkmiuiad.R
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.shizuku.ShizukuBinderWrapper
 import rikka.shizuku.SystemServiceHelper
@@ -14,16 +15,19 @@ object PackageUtils {
             PackageManager.COMPONENT_ENABLED_STATE_DEFAULT, PackageManager.COMPONENT_ENABLED_STATE_ENABLED -> {
                 try {
                     if (isPackageSuspended(pkg)) {
-                        "禁用 (suspend)"
+                        ResourceUtils.getString(R.string.package_disabled_by_suspend)
                     } else {
-                        "启用"
+                        ResourceUtils.getString(R.string.package_enabled)
                     }
-                } catch (e: PackageManager.NameNotFoundException) {
-                    "未安装"
+                } catch (_: PackageManager.NameNotFoundException) {
+                    ResourceUtils.getString(R.string.package_not_found)
                 }
             }
 
-            PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED -> "禁用"
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED -> ResourceUtils.getString(
+                R.string.package_disabled
+            )
+
             else -> throw IllegalStateException()
         }
     }
