@@ -2,7 +2,7 @@
 
 [中国語](./README.md) | 日本語
 
-MIUI / Hyper OS の広告を低コストで遮断します。
+MIUI / HyperOS の広告を低コストで遮断します。
 
 ## 注意
 
