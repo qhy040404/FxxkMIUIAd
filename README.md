@@ -1,5 +1,7 @@
 # FuckMIUIAd
 
+中国語 | [日本語](./README_JA.md)
+
 用最小的代价关闭 MIUI / 澎湃 OS 的广告。
 
 ## 注意
