@@ -66,7 +66,7 @@ dependencies {
     implementation("androidx.annotation:annotation:1.9.1")
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
-    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
 
     implementation(platform("androidx.compose:compose-bom:2024.11.00"))
     implementation("androidx.compose.runtime:runtime")
