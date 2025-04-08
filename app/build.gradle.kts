@@ -13,8 +13,8 @@ android {
         applicationId = "com.qhy040404.fxxkmiuiad"
         minSdk = 29
         targetSdk = 36
-        versionCode = 11
-        versionName = "1.4.1"
+        versionCode = 12
+        versionName = "1.4.2"
 
         @Suppress("UnstableApiUsage")
         androidResources.localeFilters.addAll(
