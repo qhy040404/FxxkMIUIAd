@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="shizuku_not_found">Shizuku はインストールされていません</string>
+  <string name="enable">有効化</string>
+  <string name="enabled">有効化済み</string>
+  <string name="disable">無効化</string>
+  <string name="disabled">無効化済み</string>
+  <string name="install_shizuku">Shizuku をインストール</string>
+  <string name="request_shizuku_auth">Shizuku 認証を要求</string>
+  <string name="package_disabled_by_suspend">無効化済み (サスペンド)</string>
+  <string name="package_enabled">有効化済み</string>
+  <string name="package_not_found">未インストール</string>
+  <string name="package_disabled">無効化済み</string>
+  <string name="permission_result_failed">認証に失敗しました。手動で認証するには、Shizuku を開いてください。</string>
+  <string name="permission_manual_sui">Shizuku が検出されませんでした。Sui で手動での認証をしてください。</string>
+  <string name="invalid_system">MIUI または HyperOS ではありません</string>
+  <string name="shizuku_running">Shizuku は実行中です</string>
+  <string name="shizuku_not_running">Shizuku は実行していません</string>
+  <string name="shizuku_authed">Shizuku を認証済みです</string>
+  <string name="shizuku_not_authed">Shizuku を認証していません</string>
+  <string name="shizuku_low_version">Shizuku が古いです。更新してください。</string>
+  <string name="jump_to_shizuku">Shizuku にジャンプする</string>
+</resources>

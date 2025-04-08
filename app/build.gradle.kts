@@ -20,6 +20,7 @@ android {
         androidResources.localeFilters.addAll(
             setOf(
                 "en",
+                "ja",
                 "zh-rCN"
             )
         )
