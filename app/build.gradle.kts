@@ -70,7 +70,7 @@ dependencies {
     implementation("dev.rikka.shizuku:provider:13.1.5")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
 
-    implementation(platform("androidx.compose:compose-bom:2025.03.01"))
+    implementation(platform("androidx.compose:compose-bom:2025.06.01"))
     implementation("androidx.compose.runtime:runtime")
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material3:material3")
